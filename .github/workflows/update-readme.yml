@@ -1,0 +1,51 @@
+name: Update README
+
+on:
+  push:
+    branches: 
+      - development
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')" 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get current refresh number
+        id: get_number
+        run: |
+          FILE="README.md"
+          # Grab the first refresh number in the README
+          CURRENT=$(grep -o 'refresh=[0-9]\+' "$FILE" | head -n 1 | cut -d= -f2)
+          if [ -z "$CURRENT" ]; then
+            echo "No refresh param  found, defaulting to 1"
+            CURRENT=1
+          fi
+          NEXT=$((CURRENT + 1))
+          echo "Current: $CURRENT -> Next: $NEXT"
+          echo "next=$NEXT" >> $GITHUB_OUTPUT
+
+      - name: Update all refresh parameters in README
+        run: |
+          FILE="README.md"
+          NEXT="${{ steps.get_number.outputs.next }}"
+          sed -i -E "s/refresh=[0-9]+/refresh=$NEXT/g" "$FILE"
+
+      - name:
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if ! git diff --quiet; then
+            git add README.md
+            git commit -m "Increment README refresh number to ${{ steps.get_number.outputs.next }} [skip ci]"
+            git push
+          else
+            echo "No changes detected."
+          fi
