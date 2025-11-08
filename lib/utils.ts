@@ -94,7 +94,7 @@ export async function getTextWithFontWidth({
 }
 
 export function getIcon({ svgName, iconColor }: TGetIconProps) {
-    const iconKey = `si${svgName}` as keyof typeof icons
+    const iconKey = `si${capitalizeString(svgName)}` as keyof typeof icons
 
     if (!(iconKey in icons)) {
         throw new Error(`Icon '${svgName}' not found.`)
@@ -107,4 +107,8 @@ export function getIcon({ svgName, iconColor }: TGetIconProps) {
     }
 
     return simpleIcon
+}
+
+export function capitalizeString(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1)
 }
