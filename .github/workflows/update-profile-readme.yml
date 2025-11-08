@@ -1,0 +1,56 @@
+name: Update README
+
+on:
+  deployment_status:
+
+permissions:
+  contents: write
+
+jobs:
+  update-readme:
+    if: "!contains(github.event.head_commit.message, '[skip ci]') && github.event.deployment_status.state == 'success'" 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout profile repo
+        uses: actions/checkout@v4
+        with:
+          repository: ebswortholiver/ebswortholiver
+          token: ${{ secrets.PROFILE_REPO_TOKEN }}
+          path: profile
+
+      - name: Get current refresh number
+        id: get_number
+        working-directory: profile
+        run: |
+          FILE="README.md"
+          # Grab the first refresh number in the README
+          CURRENT=$(grep -o 'refresh=[0-9]\+' "$FILE" | head -n 1 | cut -d= -f2)
+          if [ -z "$CURRENT" ]; then
+            echo "No refresh param  found, defaulting to 1"
+            CURRENT=1
+          fi
+          NEXT=$((CURRENT + 1))
+          echo "Current: $CURRENT -> Next: $NEXT"
+          echo "next=$NEXT" >> $GITHUB_OUTPUT
+
+      - name: Update all refresh parameters in README
+        working-directory: profile
+        run: |
+          FILE="README.md"
+          NEXT="${{ steps.get_number.outputs.next }}"
+          sed -i -E "s/refresh=[0-9]+/refresh=$NEXT/g" "$FILE"
+
+      - name: Commit and push changes
+        working-directory: profile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if ! git diff --quiet; then
+            git add README.md
+            git commit -m "Increment README refresh number to ${{ steps.get_number.outputs.next }} [skip ci]"
+            git push origin HEAD:development
+          else
+            echo "No changes."
+          fi
