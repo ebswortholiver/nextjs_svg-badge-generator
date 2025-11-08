@@ -25,9 +25,9 @@ This is to be written in plaintext with no quotation marks. e.g:
 ### SVG Name
 `svgName`
 
-This is to be written in plaintext just like the text property. Here are the currently avaliable options:
+These are fetched from simple icons, so you are to match their practices. Here are some examples:
 
-`typescript | `
+`Typescript | `
 
 ---
 
@@ -66,8 +66,8 @@ Here are some examples:
 ---
 
 ### TypeScript Badge Example
-`https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=typescript`
+`https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=Typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff`
 
 Badge:
 
-![typescript](https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff)
+![typescript](https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=Typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff)
