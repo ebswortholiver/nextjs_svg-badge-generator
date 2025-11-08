@@ -71,3 +71,21 @@ Here are some examples:
 Badge:
 
 ![typescript](https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff)
+
+---
+
+### Tailwind CSS Badge Example
+`https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=tailwindcss&svgName=tailwindcss&backgroundColor=06B6D4&textColor=ffffff&iconColor=ffffff`
+
+Badge:
+
+![tailwindcss](https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=tailwindcss&svgName=tailwindcss&backgroundColor=06B6D4&textColor=ffffff&iconColor=ffffff)
+
+---
+
+### Mongo DB Badge Example
+`https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=mongodb&svgName=mongodb&backgroundColor=47A248&textColor=ffffff&iconColor=ffffff`
+
+Badge:
+
+![mongodb](https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=mongodb&svgName=mongodb&backgroundColor=47A248&textColor=ffffff&iconColor=ffffff)
