@@ -1,5 +1,7 @@
 import opentype from "opentype.js";
 import path from "path";
+import * as icons from "simple-icons";
+import type { SimpleIcon } from "simple-icons";
 
 type TGetCustomSVGProps = {
     text: string;
@@ -13,6 +15,11 @@ type TGetTextWithFontWidthProps = {
     text: string;
     fontSize: number;
 };
+
+type TGetIconProps = {
+    svgName: string;
+    iconColor?: string;
+}
 
 export async function getCustomSVG({
     text,
@@ -84,4 +91,20 @@ export async function getTextWithFontWidth({
     const textWidth = textPath.getBoundingBox().x2;
 
     return textWidth;
+}
+
+export function getIcon({ svgName, iconColor }: TGetIconProps) {
+    const iconKey = `si${svgName}` as keyof typeof icons
+
+    if (!(iconKey in icons)) {
+        throw new Error(`Icon '${svgName}' not found.`)
+    }
+
+    const simpleIcon: SimpleIcon = { ...icons[iconKey] as SimpleIcon }
+
+    if (iconColor) {
+        simpleIcon.hex = iconColor
+    }
+
+    return simpleIcon
 }
