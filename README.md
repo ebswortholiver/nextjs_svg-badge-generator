@@ -27,7 +27,7 @@ This is to be written in plaintext with no quotation marks. e.g:
 
 These are fetched from simple icons, so you are to match their practices. Here are some examples:
 
-`Typescript | `
+[https://github.com/simple-icons/simple-icons/blob/master/slugs.md](https://github.com/simple-icons/simple-icons/blob/master/slugs.md)
 
 ---
 
