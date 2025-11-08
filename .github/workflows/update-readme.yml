@@ -45,5 +45,5 @@ jobs:
             git commit -m "Increment README refresh number to ${{ steps.get_number.outputs.next }} [skip ci]"
             git push
           else
-            echo "No changes detected."
+            echo "No changes."
           fi
