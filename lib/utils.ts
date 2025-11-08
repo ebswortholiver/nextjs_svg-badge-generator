@@ -28,8 +28,7 @@ export async function getCustomSVG({
     textColor,
     iconColor,
 }: TGetCustomSVGProps) {
-    const simpleIcon = getIcon({ svgName, iconColor })
-
+    const { simpleIcon, originalHex } = getIconAndOriginalHex({ svgName, iconColor })
 
     const height = 28;
     const paddingLeft = 8;
@@ -49,7 +48,7 @@ export async function getCustomSVG({
 
     return `
         <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img">
-            <rect width="${totalWidth}" height="${height}" fill="#${backgroundColor}" />
+            <rect width="${totalWidth}" height="${height}" fill="#${backgroundColor === "currentColor" ? originalHex : backgroundColor}" />
             
             <g transform="translate(${paddingLeft}, ${(height / 2) - (iconSize / 2)})">
                 <svg 
@@ -95,7 +94,7 @@ export async function getTextWithFontWidth({
     return textWidth;
 }
 
-export function getIcon({ svgName, iconColor }: TGetIconProps) {
+export function getIconAndOriginalHex({ svgName, iconColor }: TGetIconProps) {
     const iconKey = `si${capitalizeString(svgName)}` as keyof typeof icons
 
     if (!(iconKey in icons)) {
@@ -104,11 +103,13 @@ export function getIcon({ svgName, iconColor }: TGetIconProps) {
 
     const simpleIcon: SimpleIcon = { ...icons[iconKey] as SimpleIcon }
 
+    const originalHex = simpleIcon.hex
+
     if (iconColor) {
         simpleIcon.hex = iconColor
     }
 
-    return simpleIcon
+    return { simpleIcon, originalHex }
 }
 
 export function capitalizeString(str: string) {
