@@ -34,7 +34,7 @@ These are to be written in plaintext, like the text parameter. Here are the slug
 ### Background Color
 `backgroundColor`
 
-This is to be written in a hex code format. Write it without the hashtag as the app currently adds that itself. e.g:
+This is to be written in a hex code format. Write it without the hashtag as the app currently adds that itself. If you decide to not supply a color, it will use the color that matches the given icon. Here is the way you should structure the value:
 
 `3178c6`
 
