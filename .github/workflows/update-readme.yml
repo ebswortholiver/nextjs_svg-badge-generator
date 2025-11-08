@@ -35,7 +35,7 @@ jobs:
           NEXT="${{ steps.get_number.outputs.next }}"
           sed -i -E "s/refresh=[0-9]+/refresh=$NEXT/g" "$FILE"
 
-      - name:
+      - name: Commit and push changes
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
