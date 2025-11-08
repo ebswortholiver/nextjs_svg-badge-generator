@@ -66,8 +66,8 @@ Here are some examples:
 ---
 
 ### TypeScript Badge Example
-`https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=Typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff`
+`https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff`
 
 Badge:
 
-![typescript](https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=Typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff)
+![typescript](https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff)
