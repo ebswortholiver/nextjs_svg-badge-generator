@@ -25,7 +25,7 @@ This is to be written in plaintext with no quotation marks. e.g:
 ### SVG Name
 `svgName`
 
-These are fetched from simple icons, so you are to match their practices. Here are some examples:
+These are to be written in plaintext, like the text parameter. Here are the slugs that you can use:
 
 [https://github.com/simple-icons/simple-icons/blob/master/slugs.md](https://github.com/simple-icons/simple-icons/blob/master/slugs.md)
 
