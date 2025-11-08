@@ -30,7 +30,7 @@ export async function getCustomSVG({
 }: TGetCustomSVGProps) {
     const simpleIcon = getIcon({ svgName, iconColor })
 
-    const totalWidth = 126.5;
+
     const height = 28;
     const paddingLeft = 8;
     const iconSize = 14;
@@ -44,6 +44,8 @@ export async function getCustomSVG({
 
     const textWidth = await getTextWithFontWidth({ text, fontSize });
     const textOffset = paddingLeft + iconSize + gap + (textWidth / 2)
+
+    const totalWidth = paddingLeft + iconSize + gap + textPadding.x + textWidth + paddingLeft;
 
     return `
         <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img">
