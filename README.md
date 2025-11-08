@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SVG Badge Generator
 
-## Getting Started
+## Project Overview
+This project is a simple app that can be used to generate SVG badges for your projects, and it was made using next.js. You can embed custom SVG badges using the app with different query parameters which will adjust the look of the badge that you are deploying.
 
-First, run the development server:
+## Technologies
+This project uses next.js for it's framework, which includes use of typescript, tailwindcss and opentype which is used to parse the font used with text width calculation.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Usage
+To use the badge generator, you use the base deployment link and then add query parameters based on what you need.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The parameters and how to structure their values are as follows:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Text
+`text`
 
-## Learn More
+This is to be written in plaintext with no quotation marks. e.g:
 
-To learn more about Next.js, take a look at the following resources:
+`typescript`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### SVG Name
+`svgName`
 
-## Deploy on Vercel
+This is to be written in plaintext just like the text property. Here are the currently avaliable options:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+`typescript | `
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### Background Color
+`backgroundColor`
+
+This is to be written in a hex code format. Write it without the hashtag as the app currently adds that itself. e.g:
+
+`3178c6`
+
+---
+
+### Text Color
+`textColor`
+
+This is to be written in the same format as the background color. Once again, write it without the hashtag since the app adds it itself. e.g:
+
+`ffffff`
+
+---
+
+### Icon Color
+`iconColor`
+
+This is to be written in the same format as the background color and text color. e.g:
+
+`ffffff`
+
+---
+
+Here are some examples:
+
+### Base Deployment Link
+`https://nextjs-svg-badge-generator.vercel.app/`
+
+---
+
+### TypeScript Badge Example
+`https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=typescript`
+
+Badge:
+
+![typescript](https://nextjs-svg-badge-generator.vercel.app/api/badge/generate?text=typescript&svgName=typescript&backgroundColor=3178c6&textColor=ffffff&iconColor=ffffff)
