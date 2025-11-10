@@ -1,36 +1,12 @@
-import opentype from "opentype.js";
-import path from "path";
-import * as icons from "simple-icons";
-import type { SimpleIcon } from "simple-icons";
 import fs from "fs/promises"
+import path from "path";
+
+import opentype from "opentype.js";
+import * as icons from "simple-icons";
 import { parseStringPromise } from "xml2js"
 
-type TGetCustomSVGProps = {
-    text: string;
-    svgName: string;
-    backgroundColor: string;
-    textColor: string;
-    iconColor: string;
-};
-
-type TGetTextWithFontWidthProps = {
-    text: string;
-    fontSize: number;
-};
-
-type TGetIconProps = {
-    svgName: string;
-    iconColor?: string;
-}
-
-type TGetIconDataProps = TGetIconProps & {
-    backgroundColor: string
-}
-
-type TIconData = {
-    hex: string
-    path: string;
-}
+import type { SimpleIcon } from "simple-icons";
+import { TGetCustomSVGProps, TGetIconDataProps, TGetIconProps, TGetTextWithFontWidthProps, TIconData } from "@/types/utils";
 
 export async function getCustomSVG({
     text,
