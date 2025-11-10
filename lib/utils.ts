@@ -114,4 +114,20 @@ export function getIconAndOriginalHex({ svgName, iconColor }: TGetIconProps) {
 
 export function capitalizeString(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1)
+
+export async function loadSVGAsString(filePath: string) {
+    try {
+        let svgText = await fs.readFile(filePath, "utf8")
+
+        svgText = svgText
+            .replace(/<\?xml[^>]*>/g, "")
+            .replace(/<!DOCTYPE[^>]*>/g, "")
+            .trim();
+
+        return svgText
+    } catch (error) {
+        console.error("Error loading SVG:", error)
+        throw error
+    }
+}
 }
