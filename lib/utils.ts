@@ -166,34 +166,39 @@ export async function loadSVGAsString(filePath: string) {
 }
 
 export default function findPathData(parsedObject: unknown): string | null {
-    if (!parsedObject || typeof parsedObject !== "object") return null;
+    const dataKey: string = "d"
+    const markerKey: string = "$"
 
-    const record = parsedObject as Record<string, unknown>
+    if (!parsedObject || typeof parsedObject !== "object") return null
+
+    const record: Record<string, unknown> = parsedObject as Record<string, unknown>
+    const internalNode = record[markerKey]
 
     if (
-        "$" in record &&
-        typeof record["$"] === "object" &&
-        record["$"] !== null &&
-        "d" in (record["$"] as Record<string, unknown>)
+        internalNode
+        && typeof internalNode === "object"
+        && dataKey in internalNode
     ) {
-        const d = (record["$"] as Record<string, unknown>)["d"];
-        if (typeof d === "string") return d;
+        const data = internalNode[dataKey as keyof typeof internalNode]
+        if (typeof data === "string") return data
     }
 
-    if ("d" in record && typeof record["d"] === "string") {
-        return record["d"];
-    }
+    const directData = record[dataKey]
 
-    for (const key of Object.keys(parsedObject)) {
-        const value = parsedObject[key as keyof typeof parsedObject];
+    if (typeof directData === "string") return directData
+
+    for (const value of Object.values(record)) {
         if (Array.isArray(value)) {
-            for (const item of value as unknown[]) {
-                const found = findPathData(item);
-                if (found) return found;
+            for (const item of value) {
+                const found = findPathData(item)
+                if (found) return found
             }
-        } else if (typeof value === "object") {
-            const found = findPathData(value);
-            if (found) return found;
+        } else if (
+            typeof value === "object"
+            && value !== null
+        ) {
+            const found = findPathData(value)
+            if (found) return found
         }
     }
 
