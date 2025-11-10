@@ -114,6 +114,7 @@ export function getIconAndOriginalHex({ svgName, iconColor }: TGetIconProps) {
 
 export function capitalizeString(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1)
+}
 
 export async function loadSVGAsString(filePath: string) {
     try {
@@ -130,4 +131,38 @@ export async function loadSVGAsString(filePath: string) {
         throw error
     }
 }
+
+export default function findPathData(parsedObject: unknown): string | null {
+    if (!parsedObject || typeof parsedObject !== "object") return null;
+
+    const record = parsedObject as Record<string, unknown>
+
+    if (
+        "$" in record &&
+        typeof record["$"] === "object" &&
+        record["$"] !== null &&
+        "d" in (record["$"] as Record<string, unknown>)
+    ) {
+        const d = (record["$"] as Record<string, unknown>)["d"];
+        if (typeof d === "string") return d;
+    }
+
+    if ("d" in record && typeof record["d"] === "string") {
+        return record["d"];
+    }
+
+    for (const key of Object.keys(parsedObject)) {
+        const value = parsedObject[key as keyof typeof parsedObject];
+        if (Array.isArray(value)) {
+            for (const item of value as unknown[]) {
+                const found = findPathData(item);
+                if (found) return found;
+            }
+        } else if (typeof value === "object") {
+            const found = findPathData(value);
+            if (found) return found;
+        }
+    }
+
+    return null;
 }
