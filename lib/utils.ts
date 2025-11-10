@@ -151,14 +151,14 @@ export function capitalizeString(str: string) {
 
 export async function loadSVGAsString(filePath: string) {
     try {
-        let svgText = await fs.readFile(filePath, "utf8")
+        const svgText = await fs.readFile(filePath, "utf8")
 
-        svgText = svgText
+        const sanitizedSVGText = svgText
             .replace(/<\?xml[^>]*>/g, "")
             .replace(/<!DOCTYPE[^>]*>/g, "")
             .trim();
 
-        return svgText
+        return sanitizedSVGText
     } catch (error) {
         console.error("Error loading SVG:", error)
         throw error
