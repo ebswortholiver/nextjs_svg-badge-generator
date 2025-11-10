@@ -2,6 +2,8 @@ import opentype from "opentype.js";
 import path from "path";
 import * as icons from "simple-icons";
 import type { SimpleIcon } from "simple-icons";
+import fs from "fs/promises"
+import { parseStringPromise } from "xml2js"
 
 type TGetCustomSVGProps = {
     text: string;
@@ -28,7 +30,38 @@ export async function getCustomSVG({
     textColor,
     iconColor,
 }: TGetCustomSVGProps) {
-    const { simpleIcon, originalHex } = getIconAndOriginalHex({ svgName, iconColor })
+    let icon: { hex: string; path: string; } = {
+        hex: "",
+        path: ""
+    }
+    let hex: string
+
+    if (`si${capitalizeString(svgName)}` in icons) {
+        const { simpleIcon, originalHex } = getSimpleIconAndOriginalHex({ svgName, iconColor })
+
+        icon = simpleIcon
+        hex = originalHex
+    } else {
+        if (!iconColor) {
+            throw new Error("'iconColor' is undefined.")
+        }
+
+        const svgPath = path.join(process.cwd(), "public", "icons", `${svgName}.svg`)
+
+        const svgString = await loadSVGAsString(svgPath)
+        const parsed = await parseStringPromise(svgString)
+
+        const d = findPathData(parsed)
+
+        if (!d) {
+            throw new Error("'d' is undefined.")
+        }
+
+        icon.hex = iconColor
+        icon.path = d
+
+        hex = backgroundColor
+    }
 
     const height = 28;
     const paddingLeft = 8;
@@ -48,17 +81,17 @@ export async function getCustomSVG({
 
     return `
         <svg xmlns="http://www.w3.org/2000/svg" width="${totalWidth}" height="${height}" role="img">
-            <rect width="${totalWidth}" height="${height}" fill="#${backgroundColor === "currentColor" ? originalHex : backgroundColor}" />
+            <rect width="${totalWidth}" height="${height}" fill="#${backgroundColor === "currentColor" ? hex : backgroundColor}" />
             
             <g transform="translate(${paddingLeft}, ${(height / 2) - (iconSize / 2)})">
                 <svg 
-                    role="img"
-                    viewBox="0 0 24 24"
-                    width="${iconSize}"
-                    height="${iconSize}"
-                    fill="#${simpleIcon.hex}"
+                    role="img" 
+                    viewBox="0 0 24 24" 
+                    width="${iconSize}" 
+                    height="${iconSize}" 
+                    fill="#${icon.hex}" 
                 >
-                    <path d="${simpleIcon.path}" />
+                    <path d="${icon.path}" />
                 </svg>
             </g>
 
@@ -94,7 +127,7 @@ export async function getTextWithFontWidth({
     return textWidth;
 }
 
-export function getIconAndOriginalHex({ svgName, iconColor }: TGetIconProps) {
+export function getSimpleIconAndOriginalHex({ svgName, iconColor }: TGetIconProps) {
     const iconKey = `si${capitalizeString(svgName)}` as keyof typeof icons
 
     if (!(iconKey in icons)) {
