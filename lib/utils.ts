@@ -23,6 +23,15 @@ type TGetIconProps = {
     iconColor?: string;
 }
 
+type TGetIconDataProps = TGetIconProps & {
+    backgroundColor: string
+}
+
+type TIconData = {
+    hex: string
+    path: string;
+}
+
 export async function getCustomSVG({
     text,
     svgName,
@@ -30,38 +39,7 @@ export async function getCustomSVG({
     textColor,
     iconColor,
 }: TGetCustomSVGProps) {
-    let icon: { hex: string; path: string; } = {
-        hex: "",
-        path: ""
-    }
-    let hex: string
-
-    if (`si${capitalizeString(svgName)}` in icons) {
-        const { simpleIcon, originalHex } = getSimpleIconAndOriginalHex({ svgName, iconColor })
-
-        icon = simpleIcon
-        hex = originalHex
-    } else {
-        if (!iconColor) {
-            throw new Error("'iconColor' is undefined.")
-        }
-
-        const svgPath = path.join(process.cwd(), "public", "icons", `${svgName}.svg`)
-
-        const svgString = await loadSVGAsString(svgPath)
-        const parsed = await parseStringPromise(svgString)
-
-        const d = findPathData(parsed)
-
-        if (!d) {
-            throw new Error("'d' is undefined.")
-        }
-
-        icon.hex = iconColor
-        icon.path = d
-
-        hex = backgroundColor
-    }
+    const { icon, hex } = await getIconData({ svgName, iconColor, backgroundColor })
 
     const height = 28;
     const paddingLeft = 8;
@@ -203,4 +181,32 @@ export default function findPathData(parsedObject: unknown): string | null {
     }
 
     return null;
+}
+
+export async function getIconData({ svgName, iconColor, backgroundColor }: TGetIconDataProps) {
+    const iconKey = `si${capitalizeString(svgName)}`
+    const simpleIconExists = iconKey in icons
+
+    if (simpleIconExists) {
+        const { simpleIcon, originalHex } = getSimpleIconAndOriginalHex({ svgName, iconColor })
+        return { icon: simpleIcon, hex: originalHex }
+    }
+
+    if (!iconColor) {
+        throw new Error("'iconColor' is undefined.")
+    }
+
+    const svgPath = path.join(process.cwd(), "public", "icons", `${svgName}.svg`)
+    const svgString = await loadSVGAsString(svgPath)
+    const parsed = await parseStringPromise(svgString)
+    const data = findPathData(parsed)
+
+    if (!data) {
+        throw new Error("'d' i undefined.")
+    }
+
+    const icon: TIconData = { hex: iconColor, path: data }
+    const hex = backgroundColor
+
+    return { icon, hex }
 }
